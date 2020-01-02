@@ -1,3 +1,8 @@
 from django.db import models
 
-# Create your models here.
+
+class Entries(models.Model):
+    japanese = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.japanese
