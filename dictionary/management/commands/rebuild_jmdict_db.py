@@ -1,10 +1,11 @@
 import gzip
 import logging
-import xml.etree.ElementTree as et
+from xml.etree import ElementTree
 
 from django.core.management.base import BaseCommand
 from dictionary.models import Entry
 
+from toolkit.xml_tools import get_element_text
 
 log_format = "[%(asctime)s] %(filename)s: %(message)s"
 logging.basicConfig(level=logging.INFO, format=log_format)
@@ -29,7 +30,7 @@ class Command(BaseCommand):
 
         logging.info("Unzipping JMdict dictionary...")
         with gzip.open('assets/JMdict.gz', 'rb') as gz:
-            root = et.fromstring(gz.read().decode('utf-8'))
+            root = ElementTree.fromstring(gz.read().decode('utf-8'))
 
         logging.info("Parsing all entries found...")
         matches = root.findall('entry')
@@ -38,8 +39,9 @@ class Command(BaseCommand):
             seq_id = match.find('ent_seq').text
             entry = Entry(seq_id=seq_id)
 
-            if match.find('k_ele'):
-                entry.japanese = match.find('k_ele').find('keb').text
+            k_ele = match.find('k_ele')
+            if k_ele:
+                entry.japanese = get_element_text(k_ele, 'keb')
 
                 bulk_entries.append(entry)
 
