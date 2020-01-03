@@ -1,25 +1,47 @@
 import gzip
+import logging
 import xml.etree.ElementTree as et
 
 from django.core.management.base import BaseCommand
 from dictionary.models import Entry
 
 
+log_format = "[%(asctime)s] %(filename)s: %(message)s"
+logging.basicConfig(level=logging.INFO, format=log_format)
+
+
 class Command(BaseCommand):
-    help = 'Rebuilds the JMdict Database'
+    """
+    Downloads and rebuilds the dataset of dictionary entries.
+    """
+    help = "Rebuilds the JMdict Database"
 
     def handle(self, *args, **kwargs):
+
+        # Drop all entries from the table
+        logging.info("Removing old entries from the database table...")
         Entry.objects.all().delete()
 
-        es = []
+        # Store entries in a list for bulk creation to improve run time.
+        bulk_entries = []
 
+        # TODO: Download dictionary files automatically
+
+        logging.info("Unzipping JMdict dictionary...")
         with gzip.open('assets/JMdict.gz', 'rb') as gz:
             root = et.fromstring(gz.read().decode('utf-8'))
-            entries = root.findall('entry')
 
-            for entry in entries:
-                if entry.find('k_ele'):
-                    print(entry.find('k_ele').find('keb').text)
-                    es.append(Entry(japanese=entry.find('k_ele').find('keb').text))
+        logging.info("Parsing all entries found...")
+        matches = root.findall('entry')
 
-        Entry.objects.bulk_create(es)
+        for match in matches:
+            seq_id = match.find('ent_seq').text
+            entry = Entry(seq_id=seq_id)
+
+            if match.find('k_ele'):
+                entry.japanese = match.find('k_ele').find('keb').text
+
+                bulk_entries.append(entry)
+
+        Entry.objects.bulk_create(bulk_entries)
+        logging.info(f"{len(matches)} entries were added to the dictionary.")
