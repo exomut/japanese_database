@@ -5,7 +5,7 @@ def is_element(element: Element) -> bool:
     """
     Checks if element is not None. Element Tree objects are Falsy if no children found.
 
-    :param element: Element to check
+    :param element: ElementTree.Element to check
     :return: Returns if element exists or not
     :rtype: bool
     """

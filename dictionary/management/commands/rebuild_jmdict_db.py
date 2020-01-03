@@ -36,8 +36,9 @@ class Command(BaseCommand):
         matches = root.findall('entry')
 
         for match in matches:
-            seq_id = match.find('ent_seq').text
-            entry = Entry(seq_id=seq_id)
+            entry = Entry()
+
+            entry.seq_id = get_element_text(match, 'ent_seq')
 
             k_ele = match.find('k_ele')
             if k_ele:
