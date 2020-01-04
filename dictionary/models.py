@@ -1,8 +1,9 @@
 from django.db import models
 
 
-class Entry(models.Model):
-    ent_seq = models.IntegerField("Sequencial Id", default=0)
+class Kanji(models.Model):
+    entry_id = models.IntegerField(default=0)
+    kanji_num = models.IntegerField(default=0)
     keb = models.TextField("Kanji")
     ke_inf = models.TextField("Kanji Information")
     ke_pre = models.TextField("Kanji Priority")
@@ -12,9 +13,10 @@ class Entry(models.Model):
 
 
 class Reading(models.Model):
-    entry_id = models.ForeignKey(Entry, on_delete=models.CASCADE)
+    entry_id = models.IntegerField(default=0)
+    reading_num = models.IntegerField(default=0)
     reb = models.TextField("Reading")
-    re_nokanji = models.TextField("No Kanji")
+    re_nokanji = models.TextField("No Kanji", null=True)
     re_restr = models.TextField("Reading Restrictions")
     re_inf = models.TextField("Reading Information")
     re_pri = models.TextField("Reading Priority")
@@ -23,8 +25,9 @@ class Reading(models.Model):
         return self.reb
 
 
-class Definition(models.Model):
-    reading_id = models.ForeignKey(Reading, on_delete=models.CASCADE)
+class Sense(models.Model):
+    entry_id = models.IntegerField(default=0)
+    sense_num = models.IntegerField(default=0)
     stagk = models.TextField()
     stagr = models.TextField()
     xref = models.TextField("Cross Reference")
@@ -38,14 +41,17 @@ class Definition(models.Model):
     s_inf = models.TextField("Sense Information")
 
     def __str__(self):
-        return f"Reading ID: {self.reading_id}"
+        return f"Reading ID: {self.entry_id}"
 
 
 class Translation(models.Model):
-    definition_id = models.ForeignKey(Definition, on_delete=models.CASCADE)
+    entry_id = models.IntegerField(default=0)
+    sense_num = models.IntegerField(default=0)
+    translation_num = models.IntegerField(default=0)
     gloss = models.TextField("Glossary")
     lang = models.TextField("Language")
+    g_gend = models.TextField("Gender")
+    g_type = models.TextField("Type")
 
     def __str__(self):
         return self.gloss
-
