@@ -1,0 +1,16 @@
+{% extends 'dictionary/base.html' %}
+
+{% block search_bar %}
+
+    REPLACE WITH SEARCH BAR
+
+{% endblock search_bar %}
+
+{% block results %}
+    Search results for: {{ search }}
+    <ul class="list-group">
+        {% for kanji in kanji_group %}
+            <li class="list-group-item">{{ kanji.keb }}: </li>
+        {% endfor %}
+    </ul>
+{% endblock results %}

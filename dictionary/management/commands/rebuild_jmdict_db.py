@@ -67,7 +67,7 @@ class Command(BaseCommand):
             reading.entry_id = entry_id
             reading.reading_num = reading_num
             reading.reb = find_element_text(r_ele, 'reb')
-            reading.re_nokanji = find_element_text(r_ele, 're_nokanji')
+            reading.re_nokanji = find_element_text(r_ele, 're_nokanji') or ''
             reading.re_inf = findall_to_csv(r_ele, 're_inf')
             reading.re_pri = findall_to_csv(r_ele, 're_pri')
 
