@@ -1,16 +1,26 @@
 {% extends 'dictionary/base.html' %}
+{% load static %}
 
 {% block search_bar %}
-
-    REPLACE WITH SEARCH BAR
-
+    <div>
+        <nav class="navbar navbar-dark fixed-top bg-dark blue">
+            <form class="form-inline mr-auto" id="search-form" method="post">
+                {% csrf_token %}
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search" id="search">
+                <button class="btn btn-light btn-mdb-color btn-rounded btn-sm my-0 ml-sm-2" type="submit">Search</button>
+            </form>
+            <span class="navbar-brand navbar-right" id="branding">{{ search }}</span>
+        </nav>
+    </div>
 {% endblock search_bar %}
 
 {% block results %}
-    Search results for: {{ search }}
-    <ul class="list-group">
-        {% for kanji in kanji_group %}
-            <li class="list-group-item">{{ kanji.keb }}: </li>
-        {% endfor %}
-    </ul>
+    <div>
+        <ul class="list-group" id="results">
+        </ul>
+    </div>
 {% endblock results %}
+
+{% block javascript %}
+    <script src="{% static 'dictionary/custom.js' %}"></script>
+{% endblock javascript %}

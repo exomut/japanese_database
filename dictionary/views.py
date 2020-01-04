@@ -1,13 +1,15 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 from dictionary.models import Kanji, Reading, Sense, Translation
 
 
-def index(request):
-    search = request.GET.get('search', '')
-    kanji_group = []
-    if search != '':
-        kanji_group = Kanji.objects.filter(keb__contains=search)
+def search(request):
+    if request.POST.get('action') == 'post':
+        kanji_group = [k.keb for k in Kanji.objects.filter(keb__contains=request.POST.get('query'))[:5]]
+        json = {'entries': kanji_group}
+        return JsonResponse(json)
 
-    context = {'search': search, 'kanji_group': kanji_group}
-    return render(request, 'dictionary/search.html', context)
+
+def index(request):
+    return render(request, 'dictionary/search.html')
