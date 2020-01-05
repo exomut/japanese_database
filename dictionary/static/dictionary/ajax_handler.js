@@ -1,7 +1,9 @@
 /**
  * Search Submit using Ajax
  */
-const EntryRowTemplate = ({keb, entry_id}) => `<li class="list-group-item list-group-item-action entry" id="${entry_id}">${keb}</li>`;
+const EntryRowTemplate = ({keb, entry_id}) => `
+<li class="list-group-item list-group-item-action entry" data-toggle="modal" data-target=".def-modal" id="${entry_id}">${keb}</li>
+`;
 
 $(document).on('submit', '#search-form', function (e) {
     e.preventDefault();
@@ -15,7 +17,12 @@ $(document).on('submit', '#search-form', function (e) {
         json.entries.forEach(element => {
             results_elem.append(EntryRowTemplate({keb: element.keb, entry_id: element.entry_id}));
             document.getElementById(element.entry_id).onclick = function () {
-                alert(element.keb)
+                ajaxCall('/definition', element.entry_id, function (json) {
+                    $('#defModalLabel').text(json.keb);
+                    $('#defModalReading').text(json.reb);
+                    $('#defModalTranslation').text(json.trans);
+
+                })
             };
         });
     })

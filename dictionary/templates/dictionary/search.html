@@ -18,6 +18,23 @@
     </div>
 {% endblock search_bar %}
 
+{% block popup %}
+    <div class="modal fade def-modal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="definition-modal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="defModalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="defModalReading"></div>
+                <div id="defModalTranslation"></div>
+            </div>
+        </div>
+    </div>
+{% endblock popup %}
+
 {% block results %}
     <div>
         <ul class="list-group entries" id="results">
@@ -26,5 +43,5 @@
 {% endblock results %}
 
 {% block javascript %}
-    <script src="{% static 'dictionary/custom.js' %}"></script>
+    <script src="{% static 'dictionary/ajax_handler.js' %}"></script>
 {% endblock javascript %}

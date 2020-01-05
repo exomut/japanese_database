@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 
-from dictionary.models import Entry
+from dictionary.models import Entry, Kanji
 
 
 def search(request):
@@ -9,9 +9,10 @@ def search(request):
         query = request.POST.get('query')
 
         kanji_group = []
-        for entry in Entry.objects.filter(kanji__keb__contains=query)[:10]:
-            for kanji in entry.kanji_set.all():
-                kanji_group.append({'keb': kanji.keb, 'entry_id': entry.id})
+        # SQLite does not support calling distinct directly
+        for entry in Entry.objects.filter(kanji__keb__contains=query).values('id').distinct()[:10]:
+            keb = ", ".join([kanji.keb for kanji in Kanji.objects.filter(entry_id=entry['id'])])
+            kanji_group.append({'keb': keb, 'entry_id': entry['id']})
 
         json = {'entries': kanji_group}
 
@@ -21,9 +22,12 @@ def search(request):
 def definition(request):
     if request.POST.get('action') == 'post':
         query = request.POST.get('query')
-        readings = [r.reb for r in Entry.objects.filter(id=query)]
+        entry = Entry.objects.get(id=query)
+        kanji = ', '.join([k.keb for k in entry.kanji_set.all()])
+        readings = ', '.join([r.reb for r in entry.reading_set.all()])
+        translations = ', '.join([t.gloss for t in entry.translation_set.filter(lang='eng')])
 
-        json = {'entries': readings}
+        json = {'reb': readings, 'keb': kanji, 'trans': translations}
 
         return JsonResponse(json)
 
