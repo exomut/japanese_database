@@ -12,11 +12,10 @@ def search(request):
         pos = int(request.POST.get('pos'))
 
         kanji_group = []
-        # SQLite does not support calling distinct directly
-        for entry in Entry.objects.filter(
-                Q(kanji__keb__contains=query) | Q(reading__reb__contains=query) |
-                (Q(translation__gloss__contains=query) & Q(translation__lang='eng'))
-        ).values('id').distinct()[pos:pos+limit]:
+
+        entries = search_contains(query, pos, limit)
+
+        for entry in entries:
 
             kanji = Kanji.objects.filter(entry_id=entry['id'])
             if len(kanji) > 0:
@@ -26,7 +25,8 @@ def search(request):
 
             kanji_group.append({'keb': keb, 'entry_id': entry['id']})
 
-        json = {'pos': pos+limit, 'entries': kanji_group}
+        count = len(kanji_group)
+        json = {'pos': pos+count, 'entries': kanji_group, 'limit': limit}
 
         return JsonResponse(json)
 
@@ -47,3 +47,19 @@ def definition(request):
 
 def index(request):
     return render(request, 'dictionary/search.html')
+
+
+def search_contains(query: str, pos: int, limit: int, lang: str = 'eng'):
+    # SQLite does not support calling distinct directly
+    return Entry.objects.filter(
+        Q(kanji__keb__contains=query) | Q(reading__reb__contains=query) |
+        (Q(translation__gloss__contains=query) & Q(translation__lang=lang))
+    ).values('id').distinct()[pos:pos + limit]
+
+
+def search_only(query: str, pos: int, limit: int, lang: str = 'eng'):
+    # SQLite does not support calling distinct directly
+    return Entry.objects.filter(
+        Q(kanji__keb__exact=query) | Q(reading__reb__exact=query) |
+        (Q(translation__gloss__exact=query) & Q(translation__lang=lang))
+    ).values('id').distinct()[pos:pos + limit]

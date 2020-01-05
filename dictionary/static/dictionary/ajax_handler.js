@@ -3,13 +3,19 @@
  */
 let current_pos = 0;
 let ajax_lock = false;
+let call_lock = false;
+let current_xhr;
 
 /**
  * Handlers
  */
+$(document).ready(function () {
+  $('#search').focus();
+});
+
 $("#main").scroll(function(){
     let ele = $('#main');
-    if ( !ajax_lock && ele.get(0).scrollHeight - ele.height() - 50 <= ele.scrollTop() ) {
+    if ( !ajax_lock && !call_lock && ele.get(0).scrollHeight - ele.height() - 50 <= ele.scrollTop() ) {
         ajax_lock = true;
         get_entries();
     }
@@ -35,8 +41,9 @@ function search()
     $('#branding').text(search);
 
     // Clear old results
-    $('#results').html("");
-
+    $('#results').html('');
+    $('#count').text('');
+    call_lock = false;
     current_pos = 0;
 
     get_entries()
@@ -47,7 +54,21 @@ function get_entries()
     let search = $('#search').val();
     ajaxCall('/search', search , current_pos, function (json) {
         current_pos = json.pos;
-        make_entries(json.entries);
+
+
+        if (json.entries.length === 0)
+        {
+            $('#count').text(current_pos);
+            call_lock = true;
+        }
+        else{
+            let plus = '+';
+            if (json.entries.length < json.limit)
+                plus = '';
+
+            $('#count').text(current_pos + plus);
+            make_entries(json.entries);
+        }
     });
 }
 
@@ -73,6 +94,7 @@ function make_entries(entries) {
         };
 
     });
+
     ajax_lock = false;
 }
 
@@ -80,7 +102,10 @@ function make_entries(entries) {
  * Ajax call template for Django
  */
 const ajaxCall = function(url, query, pos, successCallback) {
-    $.ajax({
+    if (current_xhr)
+        current_xhr.abort();
+
+    current_xhr = $.ajax({
         url: url,
         type: 'POST',
         dataType: 'json',
