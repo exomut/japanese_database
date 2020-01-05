@@ -3,7 +3,7 @@ import logging
 from xml.etree import ElementTree
 
 from django.core.management.base import BaseCommand
-from dictionary.models import Kanji, Reading, Sense, Translation
+from dictionary.models import Entry, Kanji, Reading, Sense, Translation
 
 from toolkit.xml_tools import find_element_text, findall_to_csv, get_element_text
 
@@ -24,6 +24,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         # Drop all entries from the table
         logging.info("Removing old entries from the database table...")
+        Entry.objects.all().delete()
         Kanji.objects.all().delete()
         Reading.objects.all().delete()
         Sense.objects.all().delete()
@@ -35,6 +36,8 @@ class Command(BaseCommand):
         with gzip.open('assets/JMdict.gz', 'rb') as gz:
             root = ElementTree.fromstring(gz.read().decode('utf-8'))
             self.get_entries(root)
+
+        logging.info("Building Database...")
 
         Kanji.objects.bulk_create(self.bulk_kanji)
         logging.info(f"{len(self.bulk_kanji)} kanji were added.")
@@ -48,11 +51,11 @@ class Command(BaseCommand):
         Translation.objects.bulk_create(self.bulk_translations)
         logging.info(f"{len(self.bulk_translations)} translations were added.")
 
-    def build_kanji(self, entry: ElementTree.Element, entry_id: int):
+    def build_kanji(self, entry: ElementTree.Element, foreign_key):
         k_eles = entry.findall('k_ele')
         for kanji_num, k_ele in enumerate(k_eles):
             kanji = Kanji()
-            kanji.entry_id = entry_id
+            kanji.entry = foreign_key
             kanji.kanji_num = kanji_num
             kanji.keb = find_element_text(k_ele, 'keb')
             kanji.ke_inf = findall_to_csv(k_ele, 'ke_inf')
@@ -60,11 +63,11 @@ class Command(BaseCommand):
 
             self.bulk_kanji.append(kanji)
 
-    def build_reading(self, entry: ElementTree.Element, entry_id: int):
+    def build_reading(self, entry: ElementTree.Element, foreign_key):
         r_eles = entry.findall('r_ele')
         for reading_num, r_ele in enumerate(r_eles):
             reading = Reading()
-            reading.entry_id = entry_id
+            reading.entry = foreign_key
             reading.reading_num = reading_num
             reading.reb = find_element_text(r_ele, 'reb')
             reading.re_nokanji = find_element_text(r_ele, 're_nokanji') or ''
@@ -73,22 +76,22 @@ class Command(BaseCommand):
 
             self.bulk_readings.append(reading)
 
-    def build_sense(self, entry: ElementTree.Element, entry_id: int):
+    def build_sense(self, entry: ElementTree.Element, foreign_key):
         s_eles = entry.findall('sense')
         for sense_num, s_ele in enumerate(s_eles):
             sense = Sense()
-            sense.entry_id = entry_id
+            sense.entry = foreign_key
             sense.sense_num = sense_num
 
             self.bulk_senses.append(sense)
 
-            self.build_translation(s_ele, entry_id, sense_num)
+            self.build_translation(s_ele, sense_num, foreign_key)
 
-    def build_translation(self, entry: ElementTree.Element, entry_id: int, sense_num: int):
+    def build_translation(self, entry: ElementTree.Element, sense_num: int, foreign_key):
         g_eles = entry.findall('gloss')
         for translation_num, g_ele in enumerate(g_eles):
             translation = Translation()
-            translation.entry_id = entry_id
+            translation.entry = foreign_key
             translation.sense_num = sense_num
             translation.translation_num = translation_num
 
@@ -106,11 +109,24 @@ class Command(BaseCommand):
             self.bulk_translations.append(translation)
 
     def get_entries(self, root: ElementTree.Element):
-        logging.info("Parsing all entries found...")
         entries = root.findall('entry')
 
+        logging.info("Building Entry Table for Foreign Keys...")
+        bulk_entries = []
+        for entry_id, ele in enumerate(entries):
+            entry = Entry(id=entry_id, ent_seq=ele.find('ent_seq').text)
+            bulk_entries.append(entry)
+
+        Entry.objects.bulk_create(bulk_entries)
+        del bulk_entries
+
+        logging.info("Parsing all entries found...")
         for entry_id, entry in enumerate(entries):
 
-            self.build_kanji(entry, entry_id)
-            self.build_reading(entry, entry_id)
-            self.build_sense(entry, entry_id)
+            if entry_id % 10000 == 0:
+                print(entry_id)
+            foreign_key = Entry.objects.get(id=entry_id)
+
+            self.build_kanji(entry, foreign_key)
+            self.build_reading(entry, foreign_key)
+            self.build_sense(entry, foreign_key)

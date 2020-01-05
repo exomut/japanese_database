@@ -1,8 +1,15 @@
 from django.db import models
 
 
+class Entry(models.Model):
+    ent_seq = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class Kanji(models.Model):
-    entry_id = models.IntegerField(default=0)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     kanji_num = models.IntegerField(default=0)
     keb = models.TextField("Kanji")
     ke_inf = models.TextField("Kanji Information")
@@ -13,7 +20,7 @@ class Kanji(models.Model):
 
 
 class Reading(models.Model):
-    entry_id = models.IntegerField(default=0)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     reading_num = models.IntegerField(default=0)
     reb = models.TextField("Reading")
     re_nokanji = models.TextField("No Kanji", default='')
@@ -26,7 +33,7 @@ class Reading(models.Model):
 
 
 class Sense(models.Model):
-    entry_id = models.IntegerField(default=0)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     sense_num = models.IntegerField(default=0)
     stagk = models.TextField()
     stagr = models.TextField()
@@ -45,7 +52,7 @@ class Sense(models.Model):
 
 
 class Translation(models.Model):
-    entry_id = models.IntegerField(default=0)
+    entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     sense_num = models.IntegerField(default=0)
     translation_num = models.IntegerField(default=0)
     gloss = models.TextField("Glossary", default='')
