@@ -5,7 +5,7 @@ from xml.etree import ElementTree
 from django.core.management.base import BaseCommand
 from dictionary.models import Entry, Kanji, Reading, Sense, Translation
 
-from toolkit.xml_tools import find_element_text, findall_to_csv, get_element_text
+from toolkit.xml_tools import find_element_text, findall_to_csv, get_element_text, is_element
 
 log_format = "[%(asctime)s] %(filename)s: %(message)s"
 logging.basicConfig(level=logging.INFO, format=log_format)
@@ -61,7 +61,7 @@ class Command(BaseCommand):
             kanji.kanji_num = kanji_num
             kanji.keb = find_element_text(k_ele, 'keb')
             kanji.ke_inf = findall_to_csv(k_ele, 'ke_inf', '|')
-            kanji.ke_pre = findall_to_csv(k_ele, 'ke_pre', '|')
+            kanji.ke_pri = findall_to_csv(k_ele, 'ke_pri', '|')
 
             self.bulk_kanji.append(kanji)
 
@@ -72,7 +72,8 @@ class Command(BaseCommand):
             reading.entry = foreign_key
             reading.reading_num = reading_num
             reading.reb = find_element_text(r_ele, 'reb')
-            reading.re_nokanji = find_element_text(r_ele, 're_nokanji') or ''
+            reading.re_nokanji = is_element(r_ele.find('re_nokanji'))
+            reading.re_restr = findall_to_csv(r_ele, 're_restr')
             reading.re_inf = findall_to_csv(r_ele, 're_inf', '|')
             reading.re_pri = findall_to_csv(r_ele, 're_pri', '|')
 

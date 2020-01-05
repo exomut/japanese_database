@@ -13,7 +13,7 @@ class Kanji(models.Model):
     kanji_num = models.IntegerField(default=0)
     keb = models.TextField("Kanji")
     ke_inf = models.TextField("Kanji Information")
-    ke_pre = models.TextField("Kanji Priority")
+    ke_pri = models.TextField("Kanji Priority")
 
     def __str__(self):
         return self.keb
@@ -23,7 +23,7 @@ class Reading(models.Model):
     entry = models.ForeignKey(Entry, on_delete=models.CASCADE)
     reading_num = models.IntegerField(default=0)
     reb = models.TextField("Reading")
-    re_nokanji = models.TextField("No Kanji", default='')
+    re_nokanji = models.BooleanField("No Kanji")
     re_restr = models.TextField("Reading Restrictions")
     re_inf = models.TextField("Reading Information")
     re_pri = models.TextField("Reading Priority")

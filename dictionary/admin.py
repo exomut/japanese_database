@@ -8,19 +8,19 @@ class EntryAdmin(admin.ModelAdmin):
 
 
 class KanjiAdmin(admin.ModelAdmin):
-    list_display = ['entry_id', 'kanji_num', 'keb', 'ke_inf']
+    list_display = ['keb', 'id', 'entry_id', 'kanji_num', 'ke_inf', 'ke_pri']
 
 
 class ReadingAdmin(admin.ModelAdmin):
-    list_display = ['entry_id', 'reading_num', 'reb', 're_inf']
+    list_display = ['reb', 'id', 'entry_id', 'reading_num', 're_nokanji', 're_restr', 're_inf', 're_pri']
 
 
 class SenseAdmin(admin.ModelAdmin):
-    list_display = ['entry_id', 'sense_num', 'stagk', 'stagr', 'xref', 'ant', 'pos', 'field', 'misc', 'lsource', 'dial', 'pri', 's_inf']
+    list_display = ['id', 'entry_id', 'sense_num', 'stagk', 'stagr', 'xref', 'ant', 'pos', 'field', 'misc', 'lsource', 'dial', 'pri', 's_inf']
 
 
 class TranslationAdmin(admin.ModelAdmin):
-    list_display = ['entry_id', 'sense_num', 'translation_num', 'gloss', 'lang']
+    list_display = ['gloss', 'id', 'entry_id', 'sense_num', 'translation_num', 'lang', 'g_gend', 'g_type']
 
 
 admin.site.register(Entry, EntryAdmin)

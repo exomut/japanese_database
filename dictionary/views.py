@@ -7,14 +7,16 @@ from dictionary.models import Entry, Kanji, Reading
 
 def search(request):
     if request.POST.get('action') == 'post':
+        limit = 50
         query = request.POST.get('query')
+        pos = int(request.POST.get('pos'))
 
         kanji_group = []
         # SQLite does not support calling distinct directly
         for entry in Entry.objects.filter(
                 Q(kanji__keb__contains=query) | Q(reading__reb__contains=query) |
                 (Q(translation__gloss__contains=query) & Q(translation__lang='eng'))
-        ).values('id').distinct()[:10]:
+        ).values('id').distinct()[pos:pos+limit]:
 
             kanji = Kanji.objects.filter(entry_id=entry['id'])
             if len(kanji) > 0:
@@ -24,7 +26,7 @@ def search(request):
 
             kanji_group.append({'keb': keb, 'entry_id': entry['id']})
 
-        json = {'entries': kanji_group}
+        json = {'pos': pos+limit, 'entries': kanji_group}
 
         return JsonResponse(json)
 
