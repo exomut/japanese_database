@@ -11,7 +11,9 @@ def findall_to_csv(xml_obj: Element, find: str, divider: str = ',') -> str:
     :return: Returns a string of divider separated values
     :rtype: str
     """
-    return divider.join([x.text for x in xml_obj.findall(find)])
+    elements = xml_obj.findall(find)
+
+    return divider.join([x.text for x in elements if x.text])
 
 
 def get_element_text(xml_obj: Element, default: str = '') -> str:
@@ -40,7 +42,6 @@ def find_element_text(xml_obj: Element, find: str, default: str = '') -> str:
     :rtype: str
     """
     element = xml_obj.find(find)
-
     if is_element(element):
         return element.text
 

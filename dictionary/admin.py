@@ -16,7 +16,7 @@ class ReadingAdmin(admin.ModelAdmin):
 
 
 class SenseAdmin(admin.ModelAdmin):
-    list_display = ['entry_id', 'sense_num']
+    list_display = ['entry_id', 'sense_num', 'stagk', 'stagr', 'xref', 'ant', 'pos', 'field', 'misc', 'lsource', 'dial', 'pri', 's_inf']
 
 
 class TranslationAdmin(admin.ModelAdmin):

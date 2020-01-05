@@ -40,16 +40,18 @@ class Command(BaseCommand):
         logging.info("Building Database...")
 
         Kanji.objects.bulk_create(self.bulk_kanji)
-        logging.info(f"{len(self.bulk_kanji)} kanji were added.")
+        logging.info(f"1/4: {len(self.bulk_kanji)} kanji were added...")
 
         Reading.objects.bulk_create(self.bulk_readings)
-        logging.info(f"{len(self.bulk_readings)} readings were added.")
+        logging.info(f"2/4: {len(self.bulk_readings)} readings were added...")
 
         Sense.objects.bulk_create(self.bulk_senses)
-        logging.info(f"{len(self.bulk_senses)} senses were added.")
+        logging.info(f"3/4: {len(self.bulk_senses)} senses were added...")
 
         Translation.objects.bulk_create(self.bulk_translations)
-        logging.info(f"{len(self.bulk_translations)} translations were added.")
+        logging.info(f"4/4: {len(self.bulk_translations)} translations were added...")
+
+        logging.info(f"Cleaning up...")
 
     def build_kanji(self, entry: ElementTree.Element, foreign_key):
         k_eles = entry.findall('k_ele')
@@ -58,8 +60,8 @@ class Command(BaseCommand):
             kanji.entry = foreign_key
             kanji.kanji_num = kanji_num
             kanji.keb = find_element_text(k_ele, 'keb')
-            kanji.ke_inf = findall_to_csv(k_ele, 'ke_inf')
-            kanji.ke_pre = findall_to_csv(k_ele, 'ke_pre')
+            kanji.ke_inf = findall_to_csv(k_ele, 'ke_inf', '|')
+            kanji.ke_pre = findall_to_csv(k_ele, 'ke_pre', '|')
 
             self.bulk_kanji.append(kanji)
 
@@ -71,8 +73,8 @@ class Command(BaseCommand):
             reading.reading_num = reading_num
             reading.reb = find_element_text(r_ele, 'reb')
             reading.re_nokanji = find_element_text(r_ele, 're_nokanji') or ''
-            reading.re_inf = findall_to_csv(r_ele, 're_inf')
-            reading.re_pri = findall_to_csv(r_ele, 're_pri')
+            reading.re_inf = findall_to_csv(r_ele, 're_inf', '|')
+            reading.re_pri = findall_to_csv(r_ele, 're_pri', '|')
 
             self.bulk_readings.append(reading)
 
@@ -82,6 +84,18 @@ class Command(BaseCommand):
             sense = Sense()
             sense.entry = foreign_key
             sense.sense_num = sense_num
+            sense.stagk = findall_to_csv(s_ele, 'stagk', '|')
+            sense.stagr = findall_to_csv(s_ele, 'stagr', '|')
+            # Remove the Japanese Katakana dot as a csv delimiter and replace with a pipe
+            sense.xref = findall_to_csv(s_ele, 'xref', '|').replace('\u30fb', "|")
+            sense.ant = findall_to_csv(s_ele, 'ant', '|')
+            sense.pos = findall_to_csv(s_ele, 'pos', '|')
+            sense.field = findall_to_csv(s_ele, 'field', '|')
+            sense.misc = findall_to_csv(s_ele, 'misc', '|')
+            sense.lsource = findall_to_csv(s_ele, 'lsource', '|')
+            sense.dial = findall_to_csv(s_ele, 'dial', '|')
+            sense.pri = findall_to_csv(s_ele, 'pri', '|')
+            sense.s_inf = findall_to_csv(s_ele, 's_inf', '|')
 
             self.bulk_senses.append(sense)
 
@@ -118,13 +132,18 @@ class Command(BaseCommand):
             bulk_entries.append(entry)
 
         Entry.objects.bulk_create(bulk_entries)
+        total = len(bulk_entries)
         del bulk_entries
 
-        logging.info("Parsing all entries found...")
+        logging.info(f"Parsing {total} found entries...")
+
         for entry_id, entry in enumerate(entries):
 
+            # Update user on current progress
             if entry_id % 10000 == 0:
-                print(entry_id)
+                if entry_id != 0:
+                    print(f"{entry_id}/{total} parsed...")
+
             foreign_key = Entry.objects.get(id=entry_id)
 
             self.build_kanji(entry, foreign_key)

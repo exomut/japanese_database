@@ -7,6 +7,9 @@ const EntryRowTemplate = ({keb, entry_id}) => `
 
 $(document).on('submit', '#search-form', function (e) {
     e.preventDefault();
+});
+$(document).on('input', '#search-form', function (e) {
+    e.preventDefault();
     let search = $('#search').val();
     ajaxCall('/search', search , function (json) {
         // Set the current search term in the search bar
