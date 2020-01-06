@@ -17,6 +17,7 @@ $("#main").scroll(function(){
     let ele = $('#main');
     if ( !ajax_lock && !call_lock && ele.get(0).scrollHeight - ele.height() - 50 <= ele.scrollTop() ) {
         ajax_lock = true;
+        $('#loading').show();
         get_entries();
     }
 });
@@ -37,6 +38,7 @@ function search()
 {
     let search = $('#search').val();
     ajax_lock = true;
+    $('#loading').show()
     // Set the current search term in the search bar
     $('#branding').text(search);
 
@@ -69,6 +71,7 @@ function get_entries()
             $('#count').text(current_pos + plus);
             make_entries(json.entries);
         }
+        $('#loading').hide();
     });
 }
 
