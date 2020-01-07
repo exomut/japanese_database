@@ -34,6 +34,12 @@ Ordered by priority.
 
 ### Rebuilt the JMdict Database
 
+Since Github does not allow files over 100MB the database must be built after downloading.
+
+```bash
+python manage.py migrate
+```
+
 If JMDict needs to be updated, download the new [JMDict](http://ftp.monash.edu/pub/nihongo/00INDEX.html#dic_fil) and replace the old one in the assets folder without extracting it.
 
 Run the following command to parse the dictionary in to the database. The dictionary is very large, so this may take a few minutes.
