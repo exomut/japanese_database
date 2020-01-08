@@ -20,8 +20,7 @@ Ordered by priority.
 - [x] Ajax pagination for large results.
 
 - [ ] Add search customizations:
-  - [ ] Look up direction.
-  - [ ] Search parts: Starts With, Ends With, Contains, Full Match.
+  - [x] Search parts: Starts With, Ends With, Contains, Full Match.
 - [ ] More information about the definition, such as grammar type.
 - [ ] Add the Tatoeba example sentence dictionary.
 - [ ] Improve the design.

@@ -12,7 +12,20 @@
                         <button class="input-group-text btn" type="submit"><div class="fa fa-search"></div> <!-- smaller --></button>
                     </div>
                 </div>
+                <div class="button-group dropdown pl-1">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownSearchType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Contains
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownSearchType">
+                        <button class="dropdown-item search-type" type="button" id="st-cont">Contains</button>
+                        <button class="dropdown-item search-type" type="button" id="st-staw">Start with</button>
+                        <button class="dropdown-item search-type" type="button" id="st-endw">Ends with</button>
+                        <button class="dropdown-item search-type" type="button" id="st-equa">Equals</button>
+                    </div>
+                </div>
             </form>
+
+
             <div class="spinner-grow text-light navbar-center hidden" id="loading" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
@@ -41,7 +54,7 @@
 
 {% block results %}
     <div class="container-fluid overflow-auto main" id="main">
-    <div class="row entries" id="results">
+    <div class="list-group entries" id="results">
     </div>
     </div>
 {% endblock results %}
