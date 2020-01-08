@@ -18,9 +18,9 @@ def search(request):
 
             kanji = Kanji.objects.filter(entry_id=entry['id'])
             if len(kanji) > 0:
-                keb = ', '.join(k.keb for k in kanji)
+                keb = '; '.join(k.keb for k in kanji)
             else:
-                keb = ', '.join(r.reb for r in Reading.objects.filter(entry_id=entry['id']))
+                keb = '; '.join(r.reb for r in Reading.objects.filter(entry_id=entry['id']))
 
             kanji_group.append({'keb': keb, 'entry_id': entry['id']})
 
@@ -35,9 +35,9 @@ def definition(request):
         query = request.POST.get('query')
         entry = Entry.objects.get(id=query)
 
-        readings = ', '.join([r.reb for r in entry.reading_set.all()])
-        kanji = ', '.join([k.keb for k in entry.kanji_set.all()]) or readings
-        translations = ', '.join([t.gloss for t in entry.translation_set.filter(lang='eng')])
+        readings = [r.reb for r in entry.reading_set.all()]
+        kanji = [k.keb for k in entry.kanji_set.all()]
+        translations = [t.gloss for t in entry.translation_set.filter(lang='eng')]
 
         json = {'reb': readings, 'keb': kanji, 'trans': translations}
 

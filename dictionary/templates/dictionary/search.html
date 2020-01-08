@@ -12,7 +12,7 @@
                         <button class="input-group-text btn" type="submit"><div class="fa fa-search"></div> <!-- smaller --></button>
                     </div>
                 </div>
-                <div class="button-group dropdown pl-1">
+                <div class="button-group dropdown ml-1">
                     <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownSearchType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Contains
                     </button>
@@ -39,14 +39,37 @@
     <div class="modal fade def-modal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" id="definition-modal">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="defModalLabel"></h5>
+                <div class="modal-header modal-header-primary">
+                    <h3 class="modal-title" id="defModalLabel">Definition</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div id="defModalReading"></div>
-                <div id="defModalTranslation"></div>
+
+                <div class="container-fluid mt-3">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card border-primary mb-3" id="kanjiCard">
+                                <div class="card-header">Kanji</div>
+                                <div class="card-body" id="defModalKanji"></div>
+                            </div>
+                            <div class="card border-primary mb-3">
+                                <div class="card-header">Readings</div>
+                                <div class="card-body" id="defModalReading"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm">
+                            <div class="card border-primary mb-3">
+                                <div class="card-header">Translations</div>
+                                <div class="card-body" id="defModalTranslation"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>
@@ -60,5 +83,6 @@
 {% endblock results %}
 
 {% block javascript %}
+    <script src="{% static 'dictionary/templates.js' %}"></script>
     <script src="{% static 'dictionary/ajax_handler.js' %}"></script>
 {% endblock javascript %}

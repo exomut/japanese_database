@@ -9,24 +9,6 @@ let search_type = "st-cont";
 
 
 /**
- * Templates
- */
-const EntryRowTemplate = ({keb, entry_id}) => {
-    return `
-    <button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target=".def-modal" id="${entry_id}">${keb}</button>
-    `;
-};
-
-const LoadingRowTemplate = `
-<button type="button" class="list-group-time list-group-item-action d-flex justify-content-center" id="loading-row">
-    <div class="spinner-grow text-primary " role="status">
-        <span class="sr-only">Loading...</span>
-    </div>
-</button>
-`;
-
-
-/**
  * Handlers
  */
 // Set focus to search field
@@ -136,9 +118,26 @@ function make_entries(entries) {
         document.getElementById(element.entry_id).onclick = function () {
             ajaxCall('/definition', element.entry_id, 0, function (json) {
 
-                $('#defModalLabel').text(json.keb);
-                $('#defModalReading').text(json.reb);
-                $('#defModalTranslation').text(json.trans);
+                $('#defModalKanji').html('')
+                $('#defModalReading').html('')
+                $('#defModalTranslation').html('');
+                if (json.keb.length > 0) {
+                    $('#kanjiCard').show();
+                    json.keb.forEach(function (element, i)
+                    {
+                        $('#defModalKanji').append(KanjiRowTemplate({ kanji: element, id: i+1}))
+                    });
+                }else{
+                    $('#kanjiCard').hide();
+                }
+                json.reb.forEach(function (element, i)
+                {
+                    $('#defModalReading').append(ReadingRowTemplate({ reading: element, id: i+1}))
+                });
+                json.trans.forEach(function (element, i)
+                {
+                    $('#defModalTranslation').append(TranslationRowTemplate({ trans: element, id: i+1}))
+                });
 
             })
         };

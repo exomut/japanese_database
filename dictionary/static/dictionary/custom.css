@@ -6,9 +6,34 @@ body {
     height: calc(100vh - 56px);
 }
 
+.modal-header-primary {
+	color:#fff;
+    background-color: #007bff;
+}
+
 .navbar-center {
     position: absolute;
     left: calc(50% - 1rem);
+}
+
+:root {
+    --row-color-even: aliceblue;
+    --row-color-odd: white;
+}
+
+#results button:nth-of-type(even) {
+    background: var(--row-color-even);
+}
+
+#results button:nth-of-type(odd) {
+    background: var(--row-color-odd);
+}
+
+#defModalTranslation div:nth-of-type(even) {
+    background: var(--row-color-even);
+}
+#defModalTranslation div:nth-of-type(odd) {
+    background: var(--row-color-odd);
 }
 
 .hidden {
