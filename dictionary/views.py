@@ -18,9 +18,9 @@ def search(request):
 
             kanji = Kanji.objects.filter(entry_id=entry['id'])
             if len(kanji) > 0:
-                keb = '; '.join(k.keb for k in kanji)
+                keb = kanji[0].keb
             else:
-                keb = '; '.join(r.reb for r in Reading.objects.filter(entry_id=entry['id']))
+                keb = Reading.objects.filter(entry_id=entry['id'])[0].reb
 
             kanji_group.append({'keb': keb, 'entry_id': entry['id']})
 

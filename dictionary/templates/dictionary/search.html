@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="button-group dropdown ml-1">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" id="dropdownSearchType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-light dropdown-toggle" id="dropdownSearchType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Contains
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownSearchType">
@@ -24,7 +24,6 @@
                     </div>
                 </div>
             </form>
-
 
             <div class="spinner-grow text-light navbar-center hidden" id="loading" role="status">
                 <span class="sr-only">Loading...</span>
@@ -48,7 +47,7 @@
 
                 <div class="container-fluid mt-3">
                     <div class="row">
-                        <div class="col-sm">
+                        <div class="col-md">
                             <div class="card border-primary mb-3" id="kanjiCard">
                                 <div class="card-header">Kanji</div>
                                 <div class="card-body" id="defModalKanji"></div>
@@ -58,7 +57,7 @@
                                 <div class="card-body" id="defModalReading"></div>
                             </div>
                         </div>
-                        <div class="col-sm">
+                        <div class="col-md">
                             <div class="card border-primary mb-3">
                                 <div class="card-header">Translations</div>
                                 <div class="card-body" id="defModalTranslation"></div>
@@ -68,7 +67,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -76,7 +75,7 @@
 {% endblock popup %}
 
 {% block results %}
-    <div class="container-fluid overflow-auto main" id="main">
+    <div class="container-fluid overflow-auto main py-3" id="main">
     <div class="list-group entries" id="results">
     </div>
     </div>

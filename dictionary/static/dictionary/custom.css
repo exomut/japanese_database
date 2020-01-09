@@ -6,6 +6,10 @@ body {
     height: calc(100vh - 56px);
 }
 
+button.entry:hover, button.entry:active {
+    background-color: #007bff;
+}
+
 .modal-header-primary {
 	color:#fff;
     background-color: #007bff;
@@ -19,6 +23,8 @@ body {
 :root {
     --row-color-even: aliceblue;
     --row-color-odd: white;
+    --row-color-even-gray: #eee;
+    --row-color-odd-gray: white;
 }
 
 #results button:nth-of-type(even) {
@@ -27,6 +33,14 @@ body {
 
 #results button:nth-of-type(odd) {
     background: var(--row-color-odd);
+}
+
+#defModalKanji div:nth-of-type(even), #defModalReading div:nth-of-type(even) {
+    background: var(--row-color-even-gray);
+}
+
+#defModalKanji div:nth-of-type(odd), #defModalReading div:nth-of-type(odd) {
+    background: var(--row-color-odd-gray);
 }
 
 #defModalTranslation div:nth-of-type(even) {

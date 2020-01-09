@@ -116,11 +116,11 @@ function make_entries(entries) {
         $('#results').append(EntryRowTemplate({keb: element.keb, entry_id: element.entry_id}));
 
         document.getElementById(element.entry_id).onclick = function () {
-            ajaxCall('/definition', element.entry_id, 0, function (json) {
+            $('#defModalKanji').html('')
+            $('#defModalReading').html('')
+            $('#defModalTranslation').html('');
 
-                $('#defModalKanji').html('')
-                $('#defModalReading').html('')
-                $('#defModalTranslation').html('');
+            ajaxCall('/definition', element.entry_id, 0, function (json) {
                 if (json.keb.length > 0) {
                     $('#kanjiCard').show();
                     json.keb.forEach(function (element, i)

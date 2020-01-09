@@ -1,4 +1,5 @@
 db.sqlite3
+japanese_database/wsgi.py
 # Created by https://www.gitignore.io/api/python,pycharm,virtualenv
 # Edit at https://www.gitignore.io/?templates=python,pycharm,virtualenv
 
