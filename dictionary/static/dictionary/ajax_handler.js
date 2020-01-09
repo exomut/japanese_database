@@ -55,7 +55,7 @@ function search()
     let search = $('#search').val();
     ajax_lock = true;
     // Set the current search term in the search bar
-    $('#branding').text(search);
+    $('#search-term').text(search);
 
     // Clear old results
     $('#results').html('');
@@ -71,12 +71,10 @@ function search()
 function toggle_loading() {
     if (ajax_lock)
     {
-        $('#loading').show();
         $('#results').append(LoadingRowTemplate);
     }
     else
     {
-        $('#loading').hide();
         $('#loading-row').remove();
     }
 

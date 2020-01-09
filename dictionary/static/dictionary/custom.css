@@ -1,7 +1,3 @@
-body {
-    padding-top: 56px;
-}
-
 .main {
     height: calc(100vh - 56px);
 }
@@ -13,11 +9,6 @@ button.entry:hover, button.entry:active {
 .modal-header-primary {
 	color:#fff;
     background-color: #007bff;
-}
-
-.navbar-center {
-    position: absolute;
-    left: calc(50% - 1rem);
 }
 
 :root {

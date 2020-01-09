@@ -2,35 +2,40 @@
 {% load static %}
 
 {% block search_bar %}
-    <div>
-        <nav class="navbar navbar-dark fixed-top bg-primary">
-            <form class="form-inline mr-auto" id="search-form" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search" id="search">
-                    <div class="input-group-append">
-                        <button class="input-group-text btn" type="submit"><div class="fa fa-search"></div> <!-- smaller --></button>
+    <div class="container-fluid bg-primary pt-1 pb-1">
+        <div class="row align-items-center">
+            <div class="col-sm-6">
+                <form class="form-inline d-flex flex-nowrap" id="search-form" method="post">
+                    <div class="button-group dropdowni mr-1">
+                        <button type="button" class="btn btn-light dropdown-toggle" id="dropdownSearchType"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Equals
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownSearchType">
+                            <button class="dropdown-item search-type" type="button" id="st-cont">Contains</button>
+                            <button class="dropdown-item search-type" type="button" id="st-staw">Start with</button>
+                            <button class="dropdown-item search-type" type="button" id="st-endw">Ends with</button>
+                            <button class="dropdown-item search-type" type="button" id="st-equa">Equals</button>
+                        </div>
                     </div>
-                </div>
-                <div class="button-group dropdown ml-1">
-                    <button type="button" class="btn btn-light dropdown-toggle" id="dropdownSearchType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Equals
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownSearchType">
-                        <button class="dropdown-item search-type" type="button" id="st-cont">Contains</button>
-                        <button class="dropdown-item search-type" type="button" id="st-staw">Start with</button>
-                        <button class="dropdown-item search-type" type="button" id="st-endw">Ends with</button>
-                        <button class="dropdown-item search-type" type="button" id="st-equa">Equals</button>
+                    {% csrf_token %}
+                    <div class="input-group flex-fill">
+                        <input class="form-control" type="text" placeholder="Search" aria-label="Search" name="search"
+                               id="search">
+                        <div class="input-group-append">
+                            <button class="input-group-text btn" type="submit">
+                                <div class="fa fa-search"></div></button>
+                        </div>
                     </div>
-                </div>
-            </form>
-
-            <div class="spinner-grow text-light navbar-center hidden" id="loading" role="status">
-                <span class="sr-only">Loading...</span>
+                </form>
             </div>
-            <span class="navbar-brand navbar-right" id="count"></span>
-            <span class="navbar-brand navbar-right" id="branding">{{ search }}</span>
-        </nav>
+            <div class="col-sm-6 py-2">
+                <div class="d-flex justify-content-between">
+                    <div class="text-white font-weight-bold text-right" id="count"></div>
+                    <div class="text-white font-weight-bold text-right" id="search-term">{{ search }}</div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock search_bar %}
 
@@ -76,8 +81,8 @@
 
 {% block results %}
     <div class="container-fluid overflow-auto main py-3" id="main">
-    <div class="list-group entries" id="results">
-    </div>
+        <div class="list-group entries" id="results">
+        </div>
     </div>
 {% endblock results %}
 
