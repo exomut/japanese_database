@@ -5,7 +5,7 @@ let current_pos = 0;
 let ajax_lock = false;
 let call_lock = false;
 let current_xhr;
-let search_type = "st-cont";
+let search_type = "st-equa";
 
 
 /**
