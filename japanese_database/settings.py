@@ -25,12 +25,12 @@ SECRET_KEY = 'pln49cr@)&rvr#mw*x*s-4w65-ym#_pjkq=g(&yhjwc3&quov9'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-if os.path.isfile('key'):
-    with open('key') as f:
+if os.path.isfile(os.path.join(BASE_DIR, 'key')):
+    with open(os.path.join(BASE_DIR, 'key')) as f:
         SECRET_KEY = f.read().strip()
         DEBUG = False
 
-ALLOWED_HOSTS = ['jd.exomut.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'jd.exomut.com']
 
 
 # Application definition
