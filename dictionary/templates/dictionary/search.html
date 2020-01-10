@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block search_bar %}
-    <div class="container-fluid bg-primary pt-1 pb-1">
+    <div class="flex-fill container-fluid bg-primary pt-1 pb-1">
         <div class="row align-items-center">
             <div class="col-sm-6">
                 <form class="form-inline d-flex flex-nowrap" id="search-form" method="post">
@@ -80,7 +80,7 @@
 {% endblock popup %}
 
 {% block results %}
-    <div class="container-fluid overflow-auto main py-3" id="main">
+    <div class="container-fluid overflow-auto main h-100 py-3" id="main">
         <div class="list-group entries" id="results">
         </div>
     </div>
