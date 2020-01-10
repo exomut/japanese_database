@@ -69,15 +69,12 @@ function search()
 
 
 function toggle_loading() {
-    if (ajax_lock)
-    {
+    if (ajax_lock) {
         $('#results').append(LoadingRowTemplate);
     }
-    else
-    {
+    else {
         $('#loading-row').remove();
     }
-
 }
 
 function get_entries()
@@ -86,17 +83,17 @@ function get_entries()
     ajaxCall('/search', search , current_pos, function (json) {
         current_pos = json.pos;
 
-        if (json.entries.length === 0)
-        {
+        if (json.entries.length === 0) {
             $('#count').text(current_pos);
             call_lock = true;
             ajax_lock = false;
-            toggle_loading();
         }
         else{
             let plus = '+';
-            if (json.entries.length < json.limit)
+            if (json.entries.length < json.limit) {
                 plus = '';
+                call_lock = true;
+            }
 
             $('#count').text(current_pos + plus);
             make_entries(json.entries);
@@ -143,6 +140,11 @@ function make_entries(entries) {
                 });
                 json.trans.forEach(function (element, i)
                 {
+                    if (json.pos[i]) {
+                    	info = json.pos[i].replace('|', "<br />");
+                        $('#defModalTranslation').append(TranslationRowInformation({info: info}));
+                    }
+
                     text = element.replace(regex, Highlighter);
                     $('#defModalTranslation').append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
@@ -152,9 +154,7 @@ function make_entries(entries) {
                 $('#transCardLoading').hide();
             })
         };
-
     });
-
     ajax_lock = false;
 }
 

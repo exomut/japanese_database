@@ -34,3 +34,9 @@ const LoadingRowTemplate = `
 `;
 
 const Highlighter = (s) => { return `<span class="bg-warning">${s}</span>`;};
+
+const TranslationRowInformation = ({info}) => {
+	return `
+	<p class="text-primary p-0 m-0">${info}</p>
+	`;
+};

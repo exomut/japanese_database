@@ -38,8 +38,9 @@ def definition(request):
         readings = [r.reb for r in entry.reading_set.all()]
         kanji = [k.keb for k in entry.kanji_set.all()]
         translations = [t.gloss for t in entry.translation_set.filter(lang='eng')]
+        pos = [p.pos for p in entry.sense_set.all()]
 
-        json = {'reb': readings, 'keb': kanji, 'trans': translations}
+        json = {'reb': readings, 'keb': kanji, 'trans': translations, 'pos': pos}
 
         return JsonResponse(json)
 
