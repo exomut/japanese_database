@@ -84,7 +84,7 @@ def search_start_with(query: str, pos: int, limit: int, lang: str = 'eng'):
     # SQLite does not support calling distinct directly
     return Entry.objects.filter(
         Q(kanji__keb__startswith=query) | Q(reading__reb__startswith=query) |
-        (Q(translation__gloss__istartswith=query) & Q(translation__lang=lang))
+        ((Q(translation__gloss__istartswith=f'to {query}') | Q(translation__gloss__istartswith=query)) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
 
 

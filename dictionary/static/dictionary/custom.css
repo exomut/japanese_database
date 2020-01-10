@@ -1,7 +1,3 @@
-.main {
-    height: calc(100vh - 56px);
-}
-
 button.entry:hover, button.entry:active {
     background-color: #007bff;
 }
