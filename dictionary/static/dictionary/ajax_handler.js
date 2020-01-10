@@ -118,23 +118,29 @@ function make_entries(entries) {
             $('#defModalReading').html('')
             $('#defModalTranslation').html('');
 
+            let search = $('#search').val();
+            let regex = new RegExp(search, 'g');
+
             ajaxCall('/definition', element.entry_id, 0, function (json) {
                 if (json.keb.length > 0) {
                     $('#kanjiCard').show();
                     json.keb.forEach(function (element, i)
                     {
-                        $('#defModalKanji').append(KanjiRowTemplate({ kanji: element, id: i+1}))
+                        text = element.replace(regex, Highlighter({text: search}));
+                        $('#defModalKanji').append(KanjiRowTemplate({ kanji: text, id: i+1}))
                     });
                 }else{
                     $('#kanjiCard').hide();
                 }
                 json.reb.forEach(function (element, i)
                 {
-                    $('#defModalReading').append(ReadingRowTemplate({ reading: element, id: i+1}))
+                    text = element.replace(regex, Highlighter({text: search}));
+                    $('#defModalReading').append(ReadingRowTemplate({ reading: text, id: i+1}))
                 });
                 json.trans.forEach(function (element, i)
                 {
-                    $('#defModalTranslation').append(TranslationRowTemplate({ trans: element, id: i+1}))
+                    text = element.replace(regex, Highlighter({text: search}));
+                    $('#defModalTranslation').append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
 
             })

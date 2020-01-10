@@ -32,3 +32,5 @@ const LoadingRowTemplate = `
     	</div>
 	</button>
 `;
+
+const Highlighter = ({text}) => { return `<span class="bg-warning">${text}</span>`;};
