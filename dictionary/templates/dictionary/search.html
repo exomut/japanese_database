@@ -9,7 +9,7 @@
                     <div class="button-group dropdowni mr-1">
                         <button type="button" class="btn btn-light dropdown-toggle" id="dropdownSearchType"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Equals
+                            Starts with
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownSearchType">
                             <button class="dropdown-item search-type" type="button" id="st-cont">Contains</button>
@@ -56,16 +56,19 @@
                             <div class="card border-primary mb-3" id="kanjiCard">
                                 <div class="card-header">Kanji</div>
                                 <div class="card-body" id="defModalKanji"></div>
+                                <div class="card-footer" id="kanjiCardLoading"><div class="spinner-grow text-primary" role="status"></div></div>
                             </div>
                             <div class="card border-primary mb-3">
                                 <div class="card-header">Readings</div>
                                 <div class="card-body" id="defModalReading"></div>
+                                <div class="card-footer" id="readingCardLoading"><div class="spinner-grow text-primary" role="status"></div></div>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="card border-primary mb-3">
                                 <div class="card-header">Translations</div>
                                 <div class="card-body" id="defModalTranslation"></div>
+                                <div class="card-footer" id="transCardLoading"><div class="spinner-grow text-primary" role="status"></div></div>
                             </div>
                         </div>
                     </div>

@@ -5,7 +5,7 @@ let current_pos = 0;
 let ajax_lock = false;
 let call_lock = false;
 let current_xhr;
-let search_type = "st-equa";
+let search_type = "st-staw";
 
 
 /**
@@ -118,15 +118,19 @@ function make_entries(entries) {
             $('#defModalReading').html('')
             $('#defModalTranslation').html('');
 
+            $('#kanjiCardLoading').show();
+            $('#readingCardLoading').show();
+            $('#transCardLoading').show();
+
             let search = $('#search').val();
-            let regex = new RegExp(search, 'g');
+            let regex = new RegExp(search, 'ig');
 
             ajaxCall('/definition', element.entry_id, 0, function (json) {
                 if (json.keb.length > 0) {
                     $('#kanjiCard').show();
                     json.keb.forEach(function (element, i)
                     {
-                        text = element.replace(regex, Highlighter({text: search}));
+                        text = element.replace(regex, Highlighter);
                         $('#defModalKanji').append(KanjiRowTemplate({ kanji: text, id: i+1}))
                     });
                 }else{
@@ -134,15 +138,18 @@ function make_entries(entries) {
                 }
                 json.reb.forEach(function (element, i)
                 {
-                    text = element.replace(regex, Highlighter({text: search}));
+                    text = element.replace(regex, Highlighter);
                     $('#defModalReading').append(ReadingRowTemplate({ reading: text, id: i+1}))
                 });
                 json.trans.forEach(function (element, i)
                 {
-                    text = element.replace(regex, Highlighter({text: search}));
+                    text = element.replace(regex, Highlighter);
                     $('#defModalTranslation').append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
 
+                $('#kanjiCardLoading').hide();
+                $('#readingCardLoading').hide();
+                $('#transCardLoading').hide();
             })
         };
 
