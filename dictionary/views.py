@@ -1,6 +1,9 @@
+from functools import lru_cache
+
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models import Q
+
 
 from dictionary.models import Entry, Kanji, Reading
 
@@ -49,6 +52,7 @@ def index(request):
     return render(request, 'dictionary/search.html')
 
 
+@lru_cache(maxsize=10000)
 def get_entries(query: str, pos: int, limit: int, type: str = 'st-equa', lang: str = 'eng'):
     entries = []
 
@@ -91,7 +95,9 @@ def search_start_with(query: str, pos: int, limit: int, lang: str = 'eng'):
 
 def search_ends_with(query: str, pos: int, limit: int, lang: str = 'eng'):
     # SQLite does not support calling distinct directly
-    return Entry.objects.filter(
+    q = Entry.objects.filter(
         Q(kanji__keb__endswith=query) | Q(reading__reb__endswith=query) |
         (Q(translation__gloss__iendswith=query) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
+    print(f"Query: {q.query}")
+    return q
