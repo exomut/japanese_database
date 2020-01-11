@@ -13,8 +13,11 @@ let search_type = "st-staw";
  */
 // Set focus to search field
 $(document).ready(function () {
-	$('#welcome').modal('show')
-    // $('#search').focus();
+    if(!get_cookie('welcomed')) {
+        $( '#welcome' ).modal( 'show' );
+		make_cookie('welcomed', 'true', 180);
+    }
+    $('#search').focus();
 });
 
 // Dropdown menu to choose search type
