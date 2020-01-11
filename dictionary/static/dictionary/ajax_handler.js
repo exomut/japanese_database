@@ -13,7 +13,8 @@ let search_type = "st-staw";
  */
 // Set focus to search field
 $(document).ready(function () {
-  $('#search').focus();
+	$('#welcome').modal('show')
+    // $('#search').focus();
 });
 
 // Dropdown menu to choose search type
@@ -53,6 +54,9 @@ $(document).on('input', '#search-form', function () {
 function search()
 {
     let search = $('#search').val();
+
+    if (current_xhr) current_xhr.abort();
+
     ajax_lock = true;
     // Set the current search term in the search bar
     $('#search-term').text(search);
@@ -141,7 +145,7 @@ function make_entries(entries) {
                 json.trans.forEach(function (element, i)
                 {
                     if (json.pos[i]) {
-                    	info = json.pos[i].replace('|', "<br />");
+                    	info = json.pos[i].replace(/\|/g, "<br />");
                         $('#defModalTranslation').append(TranslationRowInformation({info: info}));
                     }
 
@@ -163,9 +167,6 @@ function make_entries(entries) {
  * Ajax call template for Django
  */
 const ajaxCall = function(url, query, pos, successCallback) {
-    if (current_xhr)
-        current_xhr.abort();
-
     current_xhr = $.ajax({
         url: url,
         type: 'POST',

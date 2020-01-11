@@ -3,7 +3,7 @@
  */
 const EntryRowTemplate = ({keb, entry_id}) => {
 	return `
-    	<button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target=".def-modal" id="${entry_id}">${keb}</button>
+    	<button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target="#defModal" id="${entry_id}">${keb}</button>
     `;
 };
 
@@ -15,7 +15,7 @@ const KanjiRowTemplate = ({kanji, id}) => {
 
 const ReadingRowTemplate = ({reading, id}) => {
 	return `
-	 	<div><span class="badge badge-secondary mr-2">${id}</span>${reading}</div>
+	 	<div class="reading-row"><span class="badge badge-secondary mr-2">${id}</span>${reading}</div>
     `;
 };
 
@@ -37,6 +37,6 @@ const Highlighter = (s) => { return `<span class="bg-warning">${s}</span>`;};
 
 const TranslationRowInformation = ({info}) => {
 	return `
-	<p class="text-primary p-0 m-0">${info}</p>
+		<p class="border rounded border-secondary text-primary p-0 m-0"><small>${info}</small></p>
 	`;
 };

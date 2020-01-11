@@ -24,7 +24,8 @@
                                id="search">
                         <div class="input-group-append">
                             <button class="input-group-text btn" type="submit">
-                                <div class="fa fa-search"></div></button>
+                                <span class="fa fa-search"></span>
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -39,8 +40,45 @@
     </div>
 {% endblock search_bar %}
 
+{% block welcome %}
+    <div class="modal fade def-modal" tabindex="-1" id="welcome" role="dialog" aria-hidden="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" id="definition-modal">
+                <div class="modal-header modal-header-primary">
+                    <h3 class="modal-title" id="defModalLabel">Japanese Database (JD)</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <h4>Welecome!</h4>
+                    <p>
+                        This is a Japanese <=> English dictionary using JMDict as the dictionary file.
+                        JD is meant to be a quick and responsive dictionary that works well on small screens
+                        such as smart-phones as well as larger screens such as tablets and computers.
+                    </p>
+                    <p>
+                        To look up a word just start typing in English or Japanese. *Romaji is not yet supported.
+                    </p>
+                    <p>
+                        JD is a work in progress, so some features are not available yet.
+                        For a list of planned features or if you would like to help develop the project,
+                        please visit the project's <a href="https://github.com/exomut/japanese_database">github page</a>.
+                    </p>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock welcome %}
+
 {% block popup %}
-    <div class="modal fade def-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal fade def-modal" id="defModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content" id="definition-modal">
                 <div class="modal-header modal-header-primary">
@@ -50,32 +88,38 @@
                     </button>
                 </div>
 
-                <div class="container-fluid mt-3">
+                <div class="container-fluid mt-3 modal-body">
                     <div class="row">
                         <div class="col-md">
                             <div class="card border-primary mb-3" id="kanjiCard">
                                 <div class="card-header">Kanji</div>
                                 <div class="card-body" id="defModalKanji"></div>
-                                <div class="card-footer" id="kanjiCardLoading"><div class="spinner-grow text-primary" role="status"></div></div>
+                                <div class="card-footer" id="kanjiCardLoading">
+                                    <div class="spinner-grow text-primary" role="status"></div>
+                                </div>
                             </div>
                             <div class="card border-primary mb-3">
                                 <div class="card-header">Readings</div>
                                 <div class="card-body" id="defModalReading"></div>
-                                <div class="card-footer" id="readingCardLoading"><div class="spinner-grow text-primary" role="status"></div></div>
+                                <div class="card-footer" id="readingCardLoading">
+                                    <div class="spinner-grow text-primary" role="status"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md">
                             <div class="card border-primary mb-3">
                                 <div class="card-header">Translations</div>
                                 <div class="card-body" id="defModalTranslation"></div>
-                                <div class="card-footer" id="transCardLoading"><div class="spinner-grow text-primary" role="status"></div></div>
+                                <div class="card-footer" id="transCardLoading">
+                                    <div class="spinner-grow text-primary" role="status"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">close</button>
                 </div>
             </div>
         </div>
