@@ -14,7 +14,7 @@ let search_type = "st-staw";
 // Set focus to search field
 $(document).ready(function () {
     if(!get_cookie('welcomed')) {
-        $( '#welcome' ).modal( 'show' );
+        $('#welcome').modal('show');
 		make_cookie('welcomed', 'true', 180);
     }
     $('#search').focus();
@@ -147,13 +147,14 @@ function make_entries(entries) {
                 });
                 json.trans.forEach(function (element, i)
                 {
+                	let modal_trans = $('#defModalTranslation')
                     if (json.pos[i]) {
                     	info = json.pos[i].replace(/\|/g, "<br />");
-                        $('#defModalTranslation').append(TranslationRowInformation({info: info}));
+                        modal_trans.append(TranslationRowInformation({info: info}));
                     }
 
                     text = element.replace(regex, Highlighter);
-                    $('#defModalTranslation').append(TranslationRowTemplate({ trans: text, id: i+1}))
+                    modal_trans.append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
 
                 $('#kanjiCardLoading').hide();
