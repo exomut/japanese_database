@@ -46,9 +46,9 @@ $(document).on('submit', '#search-form', function (e) {
 });
 
 // Adds instant searching to the search input field
-$(document).on('input', '#search-form', function () {
-    search();
-});
+//$(document).on('input', '#search-form', function () {
+//    search();
+//});
 
 
 /**
