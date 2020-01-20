@@ -28,7 +28,7 @@ const TranslationRowTemplate = ({trans, id}) => {
 const ExampleRowTemplate = ({japanese, english, id}) => {
 	return `
 		<div><span class="badge badge-primary mr-2">${id}</span>${japanese}</div>
-		<div>${english}</div>
+		<div class="mb-3"><small><span class="text-primary">${english}</span></small></div>
     `;
 };
 

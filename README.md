@@ -16,8 +16,8 @@ Ordered by priority.
 
 - [x] Add search customizations:
   - [x] Search parts: Starts With, Ends With, Contains, Full Match.
-- [ ] More information about the definition, such as grammar type.
-- [ ] Add the Tatoeba example sentence dictionary.
+- [x] More information about the definition, such as grammar type.
+- [x] Add the Tatoeba example sentence dictionary.
 - [ ] Improve the design.
 - [ ] Romaji support.
 - [x] Put on production server for public use.
