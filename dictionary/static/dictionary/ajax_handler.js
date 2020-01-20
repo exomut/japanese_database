@@ -14,7 +14,7 @@ let search_type = "st-staw";
 // Set focus to search field
 $(document).ready(function () {
     if(!get_cookie('welcomed')) {
-        $( '#welcome' ).modal( 'show' );
+        $('#welcome').modal('show');
 		make_cookie('welcomed', 'true', 180);
     }
     $('#search').focus();
@@ -121,10 +121,12 @@ function make_entries(entries) {
             $('#defModalKanji').html('')
             $('#defModalReading').html('')
             $('#defModalTranslation').html('');
+            $('#defModalExamples').html('');
 
             $('#kanjiCardLoading').show();
             $('#readingCardLoading').show();
             $('#transCardLoading').show();
+            $('#examCardLoading').show();
 
             let search = $('#search').val();
             let regex = new RegExp(search, 'ig');
@@ -147,18 +149,33 @@ function make_entries(entries) {
                 });
                 json.trans.forEach(function (element, i)
                 {
+                	let modal_trans = $('#defModalTranslation')
                     if (json.pos[i]) {
                     	info = json.pos[i].replace(/\|/g, "<br />");
-                        $('#defModalTranslation').append(TranslationRowInformation({info: info}));
+                        modal_trans.append(TranslationRowInformation({info: info}));
                     }
 
                     text = element.replace(regex, Highlighter);
-                    $('#defModalTranslation').append(TranslationRowTemplate({ trans: text, id: i+1}))
+                    modal_trans.append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
+                if(json.examples.length > 0){
+                    $('#examplesCard').show();
+                    json.examples.forEach(function (element, i)
+                    {
+                        let modal_exam = $('#defModalExamples')
+
+                        modal_exam.append(ExampleRowTemplate(
+                            { japanese: element.japanese, english: element.english, id: i+1}
+                        ))
+                    });
+                }else{
+                    $('#examplesCard').hide();
+                }
 
                 $('#kanjiCardLoading').hide();
                 $('#readingCardLoading').hide();
                 $('#transCardLoading').hide();
+                $('#examCardLoading').hide();
             })
         };
     });

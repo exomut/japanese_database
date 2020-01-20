@@ -62,3 +62,10 @@ class Translation(models.Model):
 
     def __str__(self):
         return self.gloss
+
+class Example(models.Model):
+    example_id = models.IntegerField(default=0)
+    english = models.TextField("English", default='')
+    japanese = models.TextField("Japanese", default='')
+    break_down = models.TextField("Japanese Break Down", default='')
+
