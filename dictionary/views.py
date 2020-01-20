@@ -1,5 +1,5 @@
 from functools import lru_cache
-import re
+import os
 
 from django.shortcuts import render
 from django.http import JsonResponse
@@ -72,7 +72,13 @@ def get_examples(word: str):
 
 
 def index(request):
-    return render(request, 'dictionary/search.html')
+
+    stats = ''
+    if os.path.isfile('stats.html'):
+        with open('stats.html') as f:
+            stats = f.read()
+
+    return render(request, 'dictionary/search.html', {'stats': stats})
 
 
 @lru_cache(maxsize=10000)
