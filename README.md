@@ -39,6 +39,7 @@ Run the following command to parse the dictionary in to the database. The dictio
 
 ```bash
 python manage.py rebuild_jmdict_db
+python manage.py rebuild_examples
 ```
 Warning: All entries will be removed from the dictionary table before rebuilding.
 
