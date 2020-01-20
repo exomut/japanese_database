@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 
 
-from dictionary.models import Entry, Kanji, Reading, Example
+from dictionary.models import Entry, Kanji, Reading, Example, Setting
 
 
 def search(request):
@@ -73,10 +73,10 @@ def get_examples(word: str):
 
 def index(request):
 
-    stats = ''
-    if os.path.isfile('stats.html'):
-        with open('stats.html') as f:
-            stats = f.read()
+    try:
+        stats = Setting.objects.get(name='stats').value
+    except Setting.DoesNotExist:
+        stats = ''
 
     return render(request, 'dictionary/search.html', {'stats': stats})
 

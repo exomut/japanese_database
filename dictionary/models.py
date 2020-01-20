@@ -69,3 +69,7 @@ class Example(models.Model):
     japanese = models.TextField("Japanese", default='')
     break_down = models.TextField("Japanese Break Down", default='')
 
+
+class Setting(models.Model):
+    name = models.CharField("Setting Name", max_length=128, default='')
+    value = models.TextField("Setting Value", default='')
