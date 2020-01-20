@@ -1,11 +1,12 @@
 from functools import lru_cache
+import re
 
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.db.models import Q
 
 
-from dictionary.models import Entry, Kanji, Reading
+from dictionary.models import Entry, Kanji, Reading, Example
 
 
 def search(request):
@@ -43,9 +44,31 @@ def definition(request):
         translations = [t.gloss for t in entry.translation_set.filter(lang='eng')]
         pos = [p.pos for p in entry.sense_set.all()]
 
-        json = {'reb': readings, 'keb': kanji, 'trans': translations, 'pos': pos}
+        search = kanji[0] if len(kanji) > 0 else readings[0]
+        examples = get_examples(search)
+        json = {'reb': readings, 'keb': kanji, 'trans': translations, 'pos': pos, 'examples': examples}
 
         return JsonResponse(json)
+
+
+def get_examples(word: str):
+    examples = []
+
+    reg_ex_pre = r'([ ]|^)'
+    reg_ex_suf = r'([\[({]|$)'
+
+    reg_ex = f'{reg_ex_pre}{word}{reg_ex_suf}'
+
+    for example in Example.objects.filter(break_down__regex=reg_ex)[:10]:
+        examples.append(
+            {
+                'english': example.english,
+                'japanese': example.japanese,
+                'break_down': example.break_down
+            }
+        )
+
+    return examples
 
 
 def index(request):

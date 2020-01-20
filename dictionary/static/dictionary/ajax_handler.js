@@ -46,9 +46,9 @@ $(document).on('submit', '#search-form', function (e) {
 });
 
 // Adds instant searching to the search input field
-$(document).on('input', '#search-form', function () {
-    search();
-});
+//$(document).on('input', '#search-form', function () {
+//    search();
+//});
 
 
 /**
@@ -121,10 +121,12 @@ function make_entries(entries) {
             $('#defModalKanji').html('')
             $('#defModalReading').html('')
             $('#defModalTranslation').html('');
+            $('#defModalExamples').html('');
 
             $('#kanjiCardLoading').show();
             $('#readingCardLoading').show();
             $('#transCardLoading').show();
+            $('#examCardLoading').show();
 
             let search = $('#search').val();
             let regex = new RegExp(search, 'ig');
@@ -156,10 +158,24 @@ function make_entries(entries) {
                     text = element.replace(regex, Highlighter);
                     modal_trans.append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
+                if(json.examples.length > 0){
+                    $('#examplesCard').show();
+                    json.examples.forEach(function (element, i)
+                    {
+                        let modal_exam = $('#defModalExamples')
+
+                        modal_exam.append(ExampleRowTemplate(
+                            { japanese: element.japanese, english: element.english, id: i+1}
+                        ))
+                    });
+                }else{
+                    $('#examplesCard').hide();
+                }
 
                 $('#kanjiCardLoading').hide();
                 $('#readingCardLoading').hide();
                 $('#transCardLoading').hide();
+                $('#examCardLoading').hide();
             })
         };
     });

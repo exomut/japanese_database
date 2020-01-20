@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Entry, Kanji, Reading, Sense, Translation
+from .models import Entry, Kanji, Reading, Sense, Translation, Example
 
 
 class EntryAdmin(admin.ModelAdmin):
@@ -22,9 +22,13 @@ class SenseAdmin(admin.ModelAdmin):
 class TranslationAdmin(admin.ModelAdmin):
     list_display = ['gloss', 'id', 'entry_id', 'sense_num', 'translation_num', 'lang', 'g_gend', 'g_type']
 
+class ExampleAdmin(admin.ModelAdmin):
+    list_display = ['id', 'example_id', 'english', 'japanese', 'break_down']
+
 
 admin.site.register(Entry, EntryAdmin)
 admin.site.register(Kanji, KanjiAdmin)
 admin.site.register(Reading, ReadingAdmin)
 admin.site.register(Sense, SenseAdmin)
 admin.site.register(Translation, TranslationAdmin)
+admin.site.register(Example, ExampleAdmin)

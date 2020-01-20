@@ -25,6 +25,13 @@ const TranslationRowTemplate = ({trans, id}) => {
     `;
 };
 
+const ExampleRowTemplate = ({japanese, english, id}) => {
+	return `
+		<div><span class="badge badge-primary mr-2">${id}</span>${japanese}</div>
+		<div>${english}</div>
+    `;
+};
+
 const LoadingRowTemplate = `
 	<button type="button" class="list-group-time list-group-item-action d-flex justify-content-center" id="loading-row">
     	<div class="spinner-grow text-primary " role="status">
@@ -37,6 +44,6 @@ const Highlighter = (s) => { return `<span class="bg-warning">${s}</span>`;};
 
 const TranslationRowInformation = ({info}) => {
 	return `
-		<p class="border rounded border-secondary text-primary p-0 m-0"><small>${info}</small></p>
+		<p class="text-primary p-0 m-0"><small>${info}</small></p>
 	`;
 };
