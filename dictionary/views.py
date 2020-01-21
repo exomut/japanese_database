@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from django.db.models import Q
 
 
-from dictionary.models import Entry, Kanji, Reading, Example, Setting
+from dictionary.models import Entry, Kanji, Reading, Translation, Example, Setting
 
 
 def search(request):
@@ -20,13 +20,16 @@ def search(request):
 
         for entry in get_entries(query, pos, limit, type=type):
 
-            kanji = Kanji.objects.filter(entry_id=entry['id'])
-            if len(kanji) > 0:
-                keb = kanji[0].keb
-            else:
-                keb = Reading.objects.filter(entry_id=entry['id'])[0].reb
+            kanji = Kanji.objects.filter(entry_id=entry['id'])[:1]
+            keb = kanji[0].keb if len(kanji) > 0 else ''
 
-            kanji_group.append({'keb': keb, 'entry_id': entry['id']})
+            readings = Reading.objects.filter(entry_id=entry['id'])[:1]
+            reb = readings[0].reb if len(readings) > 0 else ''
+
+            translations = Translation.objects.filter(lang='eng').filter(entry_id=entry['id'])[:1]
+            trans = translations[0].gloss if len(translations) > 0 else ''
+
+            kanji_group.append({'keb': keb, 'reb': reb, 'trans': trans, 'entry_id': entry['id']})
 
         count = len(kanji_group)
         json = {'pos': pos+count, 'entries': kanji_group, 'limit': limit}

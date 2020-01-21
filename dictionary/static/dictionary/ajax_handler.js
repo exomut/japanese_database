@@ -114,8 +114,12 @@ function make_entries(entries) {
     // Set a ajax click handler for each entry
     entries.forEach(element => {
 
+        if (element.keb == ''){
+            element.keb = element.reb;
+            element.reb = '';
+        }
         // Apply the template
-        $('#results').append(EntryRowTemplate({keb: element.keb, entry_id: element.entry_id}));
+        $('#results').append(EntryRowTemplate({keb: element.keb, reb: element.reb, trans: element.trans, entry_id: element.entry_id}));
 
         document.getElementById(element.entry_id).onclick = function () {
             $('#defModalKanji').html('')

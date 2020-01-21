@@ -1,9 +1,18 @@
 /**
  * Templates
  */
-const EntryRowTemplate = ({keb, entry_id}) => {
+const EntryRowTemplate = ({keb, reb, trans, entry_id}) => {
 	return `
-    	<button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target="#defModal" id="${entry_id}">${keb}</button>
+    	<button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target="#defModal" id="${entry_id}">
+    		<div class="row">
+				<div class="col-sm">
+					<div class="row">
+						<div class="col-6">${keb}</div><div class="col-6 text-primary">${reb}</div>
+					</div>
+				</div>
+				<div class="col-sm"><small>${trans}</small></div>
+			</div>
+		</button>
     `;
 };
 
