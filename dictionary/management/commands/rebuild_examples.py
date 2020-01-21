@@ -22,7 +22,10 @@ class Command(BaseCommand):
             for line in z.readlines():
                 parts = line.rstrip().decode('euc-jp').split('\t')
 
-                if len(parts) == 4:
+                # Prevent overly perverted examples from being added
+                # Replace with the below if statement if you would like to include them
+                # if len(parts) == 4:
+                if len(parts) == 4 and '[XXX]' not in line:
                     example = Example()
 
                     example.example_id = parts[0]
