@@ -121,8 +121,8 @@ class Command(BaseCommand):
 
             if translation.lang == 'eng':
                 simple = re.sub(r'[ ]?\([^\(]*\)[ ]?', '', translation.gloss)
-                simple = simple.lstrip('to be ')
-                simple = simple.lstrip('to ')
+                simple = re.sub(r'^to be ', '', simple)
+                simple = re.sub(r'^to ', '', simple)
                 translation.simple = simple
             else:
                 translation.simple = translation.gloss

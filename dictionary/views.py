@@ -131,5 +131,4 @@ def search_ends_with(query: str, pos: int, limit: int, lang: str = 'eng'):
         Q(kanji__keb__endswith=query) | Q(reading__reb__endswith=query) |
         (Q(translation__simple__iendswith=query) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
-    print(f"Query: {q.query}")
     return q
