@@ -104,7 +104,7 @@ def search_contains(query: str, pos: int, limit: int, lang: str = 'eng'):
     # SQLite does not support calling distinct directly
     return Entry.objects.filter(
         Q(kanji__keb__contains=query) | Q(reading__reb__contains=query) |
-        (Q(translation__gloss__icontains=query) & Q(translation__lang=lang))
+        (Q(translation__simple__icontains=query) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
 
 
@@ -113,7 +113,7 @@ def search_equals(query: str, pos: int, limit: int, lang: str = 'eng'):
     # Include searching for verbs in English using 'to '
     return Entry.objects.filter(
         Q(kanji__keb__exact=query) | Q(reading__reb__exact=query) |
-        ((Q(translation__gloss__iexact=f'to {query}') | Q(translation__gloss__iexact=query)) & Q(translation__lang=lang))
+        (Q(translation__simple__iexact=query) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
 
 
@@ -121,7 +121,7 @@ def search_start_with(query: str, pos: int, limit: int, lang: str = 'eng'):
     # SQLite does not support calling distinct directly
     return Entry.objects.filter(
         Q(kanji__keb__startswith=query) | Q(reading__reb__startswith=query) |
-        ((Q(translation__gloss__istartswith=f'to {query}') | Q(translation__gloss__istartswith=query)) & Q(translation__lang=lang))
+        (Q(translation__gloss__istartswith=query) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
 
 
@@ -129,7 +129,7 @@ def search_ends_with(query: str, pos: int, limit: int, lang: str = 'eng'):
     # SQLite does not support calling distinct directly
     q = Entry.objects.filter(
         Q(kanji__keb__endswith=query) | Q(reading__reb__endswith=query) |
-        (Q(translation__gloss__iendswith=query) & Q(translation__lang=lang))
+        (Q(translation__simple__iendswith=query) & Q(translation__lang=lang))
     ).values('id').distinct()[pos:pos + limit]
     print(f"Query: {q.query}")
     return q

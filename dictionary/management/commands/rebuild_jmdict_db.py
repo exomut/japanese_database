@@ -1,4 +1,5 @@
 import gzip
+import re
 import logging
 from xml.etree import ElementTree
 
@@ -117,6 +118,14 @@ class Command(BaseCommand):
             for k, v in g_ele.attrib.items():
                 if 'lang' in k:
                     translation.lang = v
+
+            if translation.lang == 'eng':
+                simple = re.sub(r'[ ]?\([^\(]*\)[ ]?', '', translation.gloss)
+                simple = simple.lstrip('to be ')
+                simple = simple.lstrip('to ')
+                translation.simple = simple
+            else:
+                translation.simple = translation.gloss
 
             translation.g_gend = g_ele.attrib.get('g_gend', '')
             translation.g_type = g_ele.attrib.get('g_type', '')

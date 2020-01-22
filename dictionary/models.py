@@ -56,6 +56,7 @@ class Translation(models.Model):
     sense_num = models.IntegerField(default=0)
     translation_num = models.IntegerField(default=0)
     gloss = models.TextField("Glossary", default='')
+    simple = models.TextField("Simplified", default='')
     lang = models.TextField("Language", default='eng')
     g_gend = models.TextField("Gender")
     g_type = models.TextField("Type")

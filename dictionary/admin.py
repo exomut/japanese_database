@@ -20,7 +20,7 @@ class SenseAdmin(admin.ModelAdmin):
 
 
 class TranslationAdmin(admin.ModelAdmin):
-    list_display = ['gloss', 'id', 'entry_id', 'sense_num', 'translation_num', 'lang', 'g_gend', 'g_type']
+    list_display = ['simple', 'gloss', 'id', 'entry_id', 'sense_num', 'translation_num', 'lang', 'g_gend', 'g_type']
 
 
 class ExampleAdmin(admin.ModelAdmin):
