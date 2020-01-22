@@ -115,11 +115,15 @@ function make_entries(entries) {
     entries.forEach(element => {
 
         if (element.keb == ''){
-            element.keb = element.reb;
-            element.reb = '';
+            // Apply the template
+            $('#results').append(EntryRowTemplateNoKanji({reb: element.reb, reb_count: element.reb_count,
+                trans: element.trans, trans_count: element.trans_count, entry_id: element.entry_id}));
+        }else{
+            // Apply the template
+            $('#results').append(EntryRowTemplate({keb: element.keb, keb_count: element.keb_count,
+                reb: element.reb, reb_count: element.reb_count,
+                trans: element.trans, trans_count: element.trans_count, entry_id: element.entry_id}));
         }
-        // Apply the template
-        $('#results').append(EntryRowTemplate({keb: element.keb, reb: element.reb, trans: element.trans, entry_id: element.entry_id}));
 
         document.getElementById(element.entry_id).onclick = function () {
             $('#defModalKanji').html('')

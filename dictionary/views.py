@@ -20,16 +20,20 @@ def search(request):
 
         for entry in get_entries(query, pos, limit, type=type):
 
-            kanji = Kanji.objects.filter(entry_id=entry['id'])[:1]
+            kanji = Kanji.objects.filter(entry_id=entry['id'])
+            keb_count = len(kanji)
             keb = kanji[0].keb if len(kanji) > 0 else ''
 
-            readings = Reading.objects.filter(entry_id=entry['id'])[:1]
+            readings = Reading.objects.filter(entry_id=entry['id'])
+            reb_count = len(readings)
             reb = readings[0].reb if len(readings) > 0 else ''
 
-            translations = Translation.objects.filter(lang='eng').filter(entry_id=entry['id'])[:1]
+            translations = Translation.objects.filter(lang='eng').filter(entry_id=entry['id'])
+            trans_count = len(translations)
             trans = translations[0].gloss if len(translations) > 0 else ''
 
-            kanji_group.append({'keb': keb, 'reb': reb, 'trans': trans, 'entry_id': entry['id']})
+            kanji_group.append({'keb': keb, 'keb_count': keb_count, 'reb': reb, 'reb_count': reb_count,
+                                'trans': trans, 'trans_count': trans_count, 'entry_id': entry['id']})
 
         count = len(kanji_group)
         json = {'pos': pos+count, 'entries': kanji_group, 'limit': limit}
@@ -54,7 +58,7 @@ def definition(request):
         return JsonResponse(json)
 
 
-def get_examples(word: str):
+def get_examples(word: str, limit: int = 10):
     examples = []
 
     reg_ex_pre = r'([ ]|^)'
@@ -62,7 +66,7 @@ def get_examples(word: str):
 
     reg_ex = f'{reg_ex_pre}{word}{reg_ex_suf}'
 
-    for example in Example.objects.filter(break_down__regex=reg_ex)[:10]:
+    for example in Example.objects.filter(break_down__regex=reg_ex)[:limit]:
         examples.append(
             {
                 'english': example.english,

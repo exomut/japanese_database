@@ -1,16 +1,33 @@
 /**
  * Templates
  */
-const EntryRowTemplate = ({keb, reb, trans, entry_id}) => {
+const EntryRowTemplate = ({keb, keb_count, reb, reb_count, trans, trans_count, entry_id}) => {
+
+
 	return `
     	<button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target="#defModal" id="${entry_id}">
     		<div class="row">
-				<div class="col-sm">
+				<div class="col-4">
 					<div class="row">
-						<div class="col-6">${keb}</div><div class="col-6 text-primary">${reb}</div>
+						<div class="col-lg"><span class="badge badge-secondary">${keb_count}</span> ${keb}</div>
+						<div class="col-lg"><small><span class="badge badge-secondary">${reb_count}</span> ${reb}</small></div>
 					</div>
 				</div>
-				<div class="col-sm"><small>${trans}</small></div>
+				<div class="col-8"><span class="badge badge-primary">${trans_count}</span> ${trans}</div>
+			</div>
+		</button>
+    `;
+};
+const EntryRowTemplateNoKanji = ({reb, reb_count, trans, trans_count, entry_id}) => {
+	return `
+    	<button type="button" class="list-group-item list-group-item-action entry" data-toggle="modal" data-target="#defModal" id="${entry_id}">
+    		<div class="row">
+				<div class="col-4">
+					<div class="row">
+						<div class="col-12"><span class="badge badge-secondary">${reb_count}</span> ${reb}</div>
+					</div>
+				</div>
+				<div class="col-8"><span class="badge badge-primary">${trans_count}</span> ${trans}</div>
 			</div>
 		</button>
     `;
