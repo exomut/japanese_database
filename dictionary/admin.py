@@ -28,7 +28,7 @@ class ExampleAdmin(admin.ModelAdmin):
 
 
 class SettingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'value']
+    list_display = ['name', 'value']
 
 
 admin.site.register(Entry, EntryAdmin)
