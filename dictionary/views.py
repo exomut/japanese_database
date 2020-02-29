@@ -51,20 +51,23 @@ def definition(request):
         translations = [t.gloss for t in entry.translation_set.filter(lang='eng')]
         pos = [p.pos for p in entry.sense_set.all()]
 
-        search = kanji[0] if len(kanji) > 0 else readings[0]
-        examples = get_examples(search)
-        json = {'reb': readings, 'keb': kanji, 'trans': translations, 'pos': pos, 'examples': examples}
+        json = {'reb': readings, 'keb': kanji, 'trans': translations, 'pos': pos}
 
         return JsonResponse(json)
 
 
-def get_examples(word: str, limit: int = 10):
+def get_examples(request):
+    limit = 10
+
+    if request.POST.get('action') == 'post':
+        query = request.POST.get('query')
+
     examples = []
 
     reg_ex_pre = r'([ ]|^)'
     reg_ex_suf = r'([\[({]|$)'
 
-    reg_ex = f'{reg_ex_pre}{word}{reg_ex_suf}'
+    reg_ex = f'{reg_ex_pre}{query}{reg_ex_suf}'
 
     for example in Example.objects.filter(break_down__regex=reg_ex)[:limit]:
         examples.append(
@@ -75,7 +78,9 @@ def get_examples(word: str, limit: int = 10):
             }
         )
 
-    return examples
+    json = {'examples': examples}
+
+    return JsonResponse(json)
 
 
 def index(request):

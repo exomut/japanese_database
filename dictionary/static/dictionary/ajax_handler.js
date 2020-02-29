@@ -140,7 +140,9 @@ function make_entries(entries) {
             let regex = new RegExp(search, 'ig');
 
             ajaxCall('/definition', element.entry_id, 0, function (json) {
+                let search_term = '';
                 if (json.keb.length > 0) {
+                    search_term = json.keb[0];
                     $('#kanjiCard').show();
                     json.keb.forEach(function (element, i)
                     {
@@ -148,6 +150,7 @@ function make_entries(entries) {
                         $('#defModalKanji').append(KanjiRowTemplate({ kanji: text, id: i+1}))
                     });
                 }else{
+                    search_term = json.reb[0];
                     $('#kanjiCard').hide();
                 }
                 json.reb.forEach(function (element, i)
@@ -166,24 +169,28 @@ function make_entries(entries) {
                     text = element.replace(regex, Highlighter);
                     modal_trans.append(TranslationRowTemplate({ trans: text, id: i+1}))
                 });
-                if(json.examples.length > 0){
-                    $('#examplesCard').show();
-                    json.examples.forEach(function (element, i)
-                    {
-                        let modal_exam = $('#defModalExamples')
-
-                        modal_exam.append(ExampleRowTemplate(
-                            { japanese: element.japanese, english: element.english, id: i+1}
-                        ))
-                    });
-                }else{
-                    $('#examplesCard').hide();
-                }
 
                 $('#kanjiCardLoading').hide();
                 $('#readingCardLoading').hide();
                 $('#transCardLoading').hide();
-                $('#examCardLoading').hide();
+
+                ajaxCall('/examples', search_term, 0, function (json) {
+                    if(json.examples.length > 0){
+                        $('#examplesCard').show();
+                        json.examples.forEach(function (element, i)
+                        {
+                            let modal_exam = $('#defModalExamples')
+
+                            modal_exam.append(ExampleRowTemplate(
+                                { japanese: element.japanese, english: element.english, id: i+1}
+                            ))
+                        });
+                    }else{
+                        $('#examplesCard').hide();
+                    }
+
+                    $('#examCardLoading').hide();
+                })
             })
         };
     });
