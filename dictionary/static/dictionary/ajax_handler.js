@@ -174,9 +174,10 @@ function make_entries(entries) {
                 $('#readingCardLoading').hide();
                 $('#transCardLoading').hide();
 
+
+                $('#examplesCard').show();
                 ajaxCall('/examples', search_term, 0, function (json) {
                     if(json.examples.length > 0){
-                        $('#examplesCard').show();
                         json.examples.forEach(function (element, i)
                         {
                             let modal_exam = $('#defModalExamples')
