@@ -1,7 +1,5 @@
 # Japanese Database (JD)
 
-[Japanese Database: Live Link](https://jd.exomut.com)
-
 **JD** is a Django based Japanese dictionary for retrieving definitions quickly using Ajax and JQuery. The dictionary file is using [JMDict](http://ftp.monash.edu/pub/nihongo/00INDEX.html#dic_fil).
 
 As of now, searches are done in all directions for words containing the search term; Kanji, Katakana, English.
